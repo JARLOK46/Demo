@@ -20,14 +20,18 @@ import io.swagger.v3.oas.annotations.Parameter;
 @RestController
 @RequestMapping("/api/apartamentos")
 public class ApartamentoController {
-
     private final ApartamentoService apartamentoService;
 
     public ApartamentoController(ApartamentoService apartamentoService) {
         this.apartamentoService = apartamentoService;
     }
 
+    @Operation(summary = "Listar todos los apartamentos", description = "Devuelve la lista completa de apartamentos. Requiere rol de ADMIN.")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito")
+    @ApiResponse(responseCode = "403", description = "Acceso denegado si no es ADMIN")
     @GetMapping
+    public ResponseEntity<List<Apartamento>> listar(@RequestHeader(value = "X-User-Role", required = false) @Parameter(description = "Rol de usuario para  validar permisos") String role) {
+        if (!"ADMIN".equalsIgnoreCase(role)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(apartamentoService.findAll());
@@ -35,6 +39,7 @@ public class ApartamentoController {
 
     @GetMapping("/mio")
     public ResponseEntity<Apartamento> consultarPropio(
+            @RequestHeader(value = "X-User-Id", required = false) String propietarioId) {
         if (propietarioId == null || propietarioId.isBlank()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -43,6 +48,8 @@ public class ApartamentoController {
     }
 
     @PostMapping
+    public ResponseEntity<Apartamento> registrar(@RequestHeader(value = "X-User-Role", required = false) String role,
+                                                 @RequestBody Apartamento apartamento) {
         if (!"ADMIN".equalsIgnoreCase(role)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
