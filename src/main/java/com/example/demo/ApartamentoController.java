@@ -37,9 +37,15 @@ public class ApartamentoController {
         return ResponseEntity.ok(apartamentoService.findAll());
     }
 
+    @Operation(summary = "Consultar apartamento propio", description = "Busca y devuelve el apartamento asociado al ID del propietario enviado en la cabecera.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Apartamento encontrado"),
+            @ApiResponse(responseCode = "404", description = "Apartamento no encontrado"),
+            @ApiResponse(responseCode = "401", description = "No autorizado si falta el ID")
+    })
     @GetMapping("/mio")
     public ResponseEntity<Apartamento> consultarPropio(
-            @RequestHeader(value = "X-User-Id", required = false) String propietarioId) {
+            @RequestHeader(value = "X-User-Id", required = false) @Parameter(description = "ID único del propietario") String propietarioId) {
         if (propietarioId == null || propietarioId.isBlank()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
