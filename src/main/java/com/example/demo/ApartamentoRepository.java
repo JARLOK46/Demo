@@ -31,4 +31,8 @@ public class ApartamentoRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    public void deleteById(String id) {
+        apartamentos.remove(id);
+    }
 }

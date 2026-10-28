@@ -34,7 +34,7 @@ public class ApartamentoService {
             existente.setTorre(detalles.getTorre());
             existente.setArea(detalles.getArea());
             existente.setPropietarioId(detalles.getPropietarioId());
-            return apartamentoRepository.update(existente);
+            return apartamentoRepository.save(existente);
         }
         return null;
     }
