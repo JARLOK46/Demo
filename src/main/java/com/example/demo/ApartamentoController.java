@@ -26,6 +26,9 @@ public class ApartamentoController {
         this.apartamentoService = apartamentoService;
     }
 
+    @Operation(summary = "Listar todos los apartamentos", description = "Devuelve la lista completa de apartamentos. Requiere rol de ADMIN.")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito")
+    @ApiResponse(responseCode = "403", description = "Acceso denegado si no es ADMIN")
     @GetMapping
     public ResponseEntity<List<Apartamento>> listar(@RequestHeader(value = "X-User-Role", required = false) String role) {
         if (!"ADMIN".equalsIgnoreCase(role)) {
