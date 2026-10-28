@@ -1,10 +1,13 @@
 package com.example.demo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Repository;
+
 @Repository
 public class UsuarioRepository {
 
@@ -26,9 +29,10 @@ public class UsuarioRepository {
         return new ArrayList<>(baseDeDatos.values());
     }
 
-    // Filtrar por nombre
-    public List<Usuario> findByNombreContaining(String nombre ) {
-        return baseDeDatos.values().stream().filter(usuario -> usuario.getNombre().toLowerCase().contains(nombre.toLowerCase())).collect(Collectors.toList());
+    public List<Usuario> findByNombreContaining(String nombre) {
+        return baseDeDatos.values().stream()
+                .filter(usuario -> usuario.getNombre().toLowerCase().contains(nombre.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     // Eliminar un usuario

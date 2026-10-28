@@ -1,4 +1,5 @@
 package com.example.demo;
+
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -26,26 +27,14 @@ public class ApartamentoController {
         this.apartamentoService = apartamentoService;
     }
 
-    @Operation(summary = "Listar todos los apartamentos", description = "Devuelve la lista completa de apartamentos. Requiere rol de ADMIN.")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida con éxito")
-    @ApiResponse(responseCode = "403", description = "Acceso denegado si no es ADMIN")
     @GetMapping
-    public ResponseEntity<List<Apartamento>> listar(@RequestHeader(value = "X-User-Role", required = false) @Parameter(description = "Rol del usuario para validar permisos") String propietarioID) {
-        if (!"ADMIN".equalsIgnoreCase(propietarioID)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(apartamentoService.findAll());
     }
 
-    @Operation(summary = "Consultar apartamento propio", description = "Busca y devuelve el apartamento asociado al ID del propietario enviado en la cabecera.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Apartamento encontrado"),
-            @ApiResponse(responseCode = "404", description = "Apartamento no encontrado"),
-            @ApiResponse(responseCode = "401", description = "No autorizado si falta el ID")
-    })
     @GetMapping("/mio")
     public ResponseEntity<Apartamento> consultarPropio(
-            @RequestHeader(value = "X-User-Id", required = false) @Parameter(description = "ID unico del propietario") String propietarioId) {
         if (propietarioId == null || propietarioId.isBlank()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -53,14 +42,7 @@ public class ApartamentoController {
         return apartamento == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(apartamento);
     }
 
-    @Operation(summary = "Registrar un apartamento", description = "Crea un nuevo registro de apartamento. Requiere rol de ADMIN.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Apartamento creado exitosamente"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado si no es ADMIN")
-    })
     @PostMapping
-    public ResponseEntity<Apartamento> registrar(@RequestHeader(value = "X-User-Role", required = false) @Parameter(description = "Rol de usuario") String role,
-                                                 @RequestBody @Parameter(description = "Datos del apartamento a registrar ") Apartamento apartamento) {
         if (!"ADMIN".equalsIgnoreCase(role)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }

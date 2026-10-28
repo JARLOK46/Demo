@@ -8,11 +8,12 @@ public class Usuario {
     private String nombre;
     private String email;
     private int edad;
+
     public Usuario() {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Usuario(String nombre, String email, int edad){
+    public Usuario(String nombre, String email, int edad) {
         this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.email = email;
@@ -24,30 +25,31 @@ public class Usuario {
         return id;
     }
 
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
-     public String getNombre() {
+
+    public String getNombre() {
         return nombre;
-     }
+    }
 
-     public void setNombre(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
-     }
+    }
 
-     public String getEmail() {
+    public String getEmail() {
         return email;
-     }
+    }
 
-     public void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-     }
+    }
 
-     public int getEdad() {
+    public int getEdad() {
         return edad;
-     }
+    }
 
-     public void setEdad(int edad){
+    public void setEdad(int edad) {
         this.edad = edad;
-     }
+    }
 }

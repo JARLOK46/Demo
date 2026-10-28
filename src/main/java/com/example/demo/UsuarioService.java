@@ -1,8 +1,10 @@
 package com.example.demo;
+
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 @Service
 public class UsuarioService {
 
@@ -62,6 +64,12 @@ public class UsuarioService {
                     case "edad":
                         usuario.setEdad((Integer) value);
                         break;
+                    case "nombre" -> usuario.setNombre((String) value);
+                    case "email" -> usuario.setEmail((String) value);
+                    case "edad" -> usuario.setEdad(((Number) value).intValue());
+                    default -> {
+                        // Ignore fields not supported by the partial update contract.
+                    }
                 }
             });
             return usuarioRepository.update(usuario);
