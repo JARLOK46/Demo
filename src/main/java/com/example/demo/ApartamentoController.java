@@ -45,7 +45,7 @@ public class ApartamentoController {
     })
     @GetMapping("/mio")
     public ResponseEntity<Apartamento> consultarPropio(
-            @RequestHeader(value = "X-User-Id", required = false) String propietarioId) {
+            @RequestHeader(value = "X-User-Id", required = false) @Parameter(description = "ID unico del propietario") String propietarioId) {
         if (propietarioId == null || propietarioId.isBlank()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
