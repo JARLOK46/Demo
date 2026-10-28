@@ -21,6 +21,10 @@ public class ApartamentoRepository {
         return new ArrayList<>(apartamentos.values());
     }
 
+    public Apartamento findById(String id){
+        return apartamentos.get(id);
+    }
+
     public Apartamento findByPropietarioId(String propietarioId) {
         return apartamentos.values().stream()
                 .filter(apartamento -> propietarioId.equals(apartamento.getPropietarioId()))

@@ -66,4 +66,40 @@ public class ApartamentoController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(apartamentoService.save(apartamento));
     }
+
+    @Operation(summary = "Actualizar un apartamento", description = "Modifica los datos de un apartamento existente. Requiere rol de ADMIN.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Apartamento actualizado con éxito"),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado si no es ADMIN"),
+            @ApiResponse(responseCode = "404", description = "Apartamento no encontrado")
+    })
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Apartamento> actualizar(
+            @RequestHeader(value = "X-User-Role", required = false) @Parameter(description = "Rol del usuario") String role,
+            @PathVariable @Parameter(description = "ID del apartamento a actualizar") String id,
+            @RequestBody @Parameter(description = "Nuevos datos del apartamento") Apartamento apartamentoDetalles) {
+        if (!"ADMIN".equalsIgnoreCase(role)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Apartamento actualizado = apartamentoService.update(id, apartamentoDetalles);
+        return actualizado != null ? ResponseEntity.ok(actualizado) : ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Eliminar un apartamento", description = "Elimina un apartamento del sistema por su ID. Requiere rol de ADMIN.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Apartamento eliminado exitosamente"),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado si no es ADMIN"),
+            @ApiResponse(responseCode = "404", description = "Apartamento no encontrado")
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(
+            @RequestHeader(value = "X-User-Role", required = false) @Parameter(description = "Rol del usuario") String role,
+            @PathVariable @Parameter(description = "ID del apartamento a eliminar") String id) {
+        if (!"ADMIN".equalsIgnoreCase(role)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        boolean eliminado = apartamentoService.deleteById(id);
+        return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
 }

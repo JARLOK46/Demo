@@ -26,4 +26,25 @@ public class ApartamentoService {
     public Apartamento save(Apartamento apartamento) {
         return apartamentoRepository.save(apartamento);
     }
+
+    public Apartamento update(String id, Apartamento detalles) {
+        Apartamento existente = apartamentoRepository.findById(id);
+        if (existente != null) {
+            existente.setNumero(detalles.getNumero());
+            existente.setTorre(detalles.getTorre());
+            existente.setArea(detalles.getArea());
+            existente.setPropietarioId(detalles.getPropietarioId());
+            return apartamentoRepository.update(existente);
+        }
+        return null;
+    }
+
+    public boolean deleteById(String id) {
+        Apartamento existente = apartamentoRepository.findById(id);
+        if (existente != null) {
+            apartamentoRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
