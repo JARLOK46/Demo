@@ -55,15 +55,7 @@ public class UsuarioService {
         if (usuario != null) {
             updates.forEach((key, value) -> {
                 switch (key) {
-                    case "nombre":
-                        usuario.setNombre((String) value);
-                        break;
-                    case "email":
-                        usuario.setEmail((String) value);
-                        break;
-                    case "edad":
-                        usuario.setEdad((Integer) value);
-                        break;
+
                     case "nombre" -> usuario.setNombre((String) value);
                     case "email" -> usuario.setEmail((String) value);
                     case "edad" -> usuario.setEdad(((Number) value).intValue());
